@@ -1,4 +1,4 @@
-name: Supabase keep-alive
+name: Supabase keep-alive (LOGAPP)
 
 on:
   schedule:
@@ -15,15 +15,16 @@ jobs:
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_LOGAPP_ANON_KEY }}
         run: |
           set -e
-
           SUPABASE_URL="${SUPABASE_URL%/}"
+
+          echo "Pinging ${SUPABASE_URL}"
 
           code=$(curl -sS -o /dev/null -w "%{http_code}" \
             -X POST \
             -H "apikey: ${SUPABASE_ANON_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
             -H "Content-Type: application/json" \
-            -d '{}' \
+            -d "{}" \
             "${SUPABASE_URL}/rest/v1/keep_alive")
 
           echo "HTTP status: $code"
