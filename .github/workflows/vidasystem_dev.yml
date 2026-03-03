@@ -1,0 +1,34 @@
+name: Supabase keep-alive (vidasystem_dev)
+
+on:
+  schedule:
+    - cron: "0 12 * * 2,5"   # Terça e Sexta 12:00 UTC
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase REST (write)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_VIDASYSTEM_DEV_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_VIDASYSTEM_DEV_ANON_KEY }}
+        run: |
+          set -e
+          SUPABASE_URL="${SUPABASE_URL%/}"
+          echo "Pinging ${SUPABASE_URL}"
+
+          code=$(curl -sS -o /dev/null -w "%{http_code}" \
+            -X POST \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            -H "Content-Type: application/json" \
+            -d "{}" \
+            "${SUPABASE_URL}/rest/v1/keep_alive")
+
+          echo "HTTP status: $code"
+
+          if [ "$code" != "201" ] && [ "$code" != "200" ]; then
+            echo "Keep-alive failed (expected 200 or 201)."
+            exit 1
+          fi
