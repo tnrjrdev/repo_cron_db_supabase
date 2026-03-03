@@ -2,7 +2,7 @@ name: Supabase keep-alive (Transporte)
 
 on:
   schedule:
-    - cron: "0 12 * * 2,5"   # Terça e Sexta 12:00 UTC
+    - cron: "0 12 * * 2,5"
   workflow_dispatch:
 
 jobs:
@@ -19,9 +19,7 @@ jobs:
 
           echo "Pinging ${SUPABASE_URL}"
 
-          code=$(curl -sS -o /dev/null -w "%{http_code}" \
-          echo "KEY set? $([ -n "$SUPABASE_ANON_KEY" ] && echo yes || echo no)"
-            -X POST \
+          code=$(curl -sS -o /dev/null -w "%{http_code}" -X POST \
             -H "apikey: ${SUPABASE_ANON_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
             -H "Content-Type: application/json" \
