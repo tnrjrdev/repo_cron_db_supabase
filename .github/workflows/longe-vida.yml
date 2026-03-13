@@ -2,7 +2,7 @@ name: Supabase keep-alive (Longevida)
 
 on:
   schedule:
-    - cron: "0 12 * * 2,5"   # Terça e Sexta 12:00 UTC
+   - cron: "0 12 * * *"
   workflow_dispatch:
 
 jobs:
