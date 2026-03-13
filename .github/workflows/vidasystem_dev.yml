@@ -2,7 +2,7 @@ name: Supabase keep-alive (vidasystem_dev)
 
 on:
   schedule:
-    - cron: "0 12 * * *"   # Terça e Sexta 12:00 UTC
+    - cron: "0 12 * * *"
   workflow_dispatch:
 
 jobs:
